@@ -26,9 +26,11 @@ import static org.junit.Assert.*;
  */
 public class FirstAttemptTest {
     
+    private static final String SRC_TEST_RESOURCES = "src/test/resources";
+    
      @Test
      public void readCsvToMemory() {
-         Source src = new CSVFileSource("./src/main/resources/com/linux/enhydrator/FL_insurance_sample.csv", ",", "utf-8", true);
+         Source src = new CSVFileSource(SRC_TEST_RESOURCES + "/com/linux/enhydrator/FL_insurance_sample.csv", ",", "utf-8", true);
          Pump pump = new Pump.Engine()
                  .from(src)
                  .to(new VirtualSinkSource())
