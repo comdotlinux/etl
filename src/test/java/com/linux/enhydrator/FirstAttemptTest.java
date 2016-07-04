@@ -5,6 +5,14 @@
  */
 package com.linux.enhydrator;
 
+import com.airhacks.enhydrator.Pump;
+import com.airhacks.enhydrator.in.CSVFileSource;
+import com.airhacks.enhydrator.in.Source;
+import com.airhacks.enhydrator.in.VirtualSinkSource;
+import com.airhacks.enhydrator.out.LogSink;
+import com.airhacks.enhydrator.transform.Memory;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -18,25 +26,15 @@ import static org.junit.Assert.*;
  */
 public class FirstAttemptTest {
     
-    @BeforeClass
-    public static void setUpClass() {
-    }
-    
-    @AfterClass
-    public static void tearDownClass() {
-    }
-    
-    @Before
-    public void setUp() {
-    }
-    
-    @After
-    public void tearDown() {
-    }
-
-    // TODO add test methods here.
-    // The methods must be annotated with annotation @Test. For example:
-    //
-    // @Test
-    // public void hello() {}
+     @Test
+     public void readCsvToMemory() {
+         Source src = new CSVFileSource("./src/main/resources/com/linux/enhydrator/SampleCSVFile_11kb.csv", ",", "ansi", false);
+         Pump pump = new Pump.Engine()
+                 .from(src)
+                 .to(new VirtualSinkSource())
+                 .to(new LogSink())
+                 .build();
+         Memory memory = pump.start();
+         assertThat(memory, is(notNullValue()));
+     }
 }
