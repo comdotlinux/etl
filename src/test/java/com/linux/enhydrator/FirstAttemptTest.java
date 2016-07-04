@@ -28,7 +28,7 @@ public class FirstAttemptTest {
     
      @Test
      public void readCsvToMemory() {
-         Source src = new CSVFileSource("./src/main/resources/com/linux/enhydrator/SampleCSVFile_11kb.csv", ",", "ansi", false);
+         Source src = new CSVFileSource("./src/main/resources/com/linux/enhydrator/FL_insurance_sample.csv", ",", "utf-8", true);
          Pump pump = new Pump.Engine()
                  .from(src)
                  .to(new VirtualSinkSource())
