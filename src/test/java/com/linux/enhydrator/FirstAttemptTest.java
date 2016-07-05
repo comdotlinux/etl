@@ -38,5 +38,6 @@ public class FirstAttemptTest {
                  .build();
          Memory memory = pump.start();
          assertThat(memory, is(notNullValue()));
+         assertThat(memory.areErrorsOccured(), is(false));
      }
 }
