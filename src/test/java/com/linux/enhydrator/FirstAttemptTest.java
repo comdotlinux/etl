@@ -27,15 +27,19 @@ import static org.junit.Assert.*;
 public class FirstAttemptTest {
     
     private static final String SRC_TEST_RESOURCES = "src/test/resources";
+    private static final Source SRC = new CSVFileSource(SRC_TEST_RESOURCES + "/com/linux/enhydrator/FL_insurance_sample.csv", ",", "utf-8", true);
+    private Pump.Engine engine;
+    
+    @Before
+    public void setUp(){
+        this.engine = new Pump.Engine().from(SRC);
+    }
     
      @Test
      public void readCsvToMemory() {
-         Source src = new CSVFileSource(SRC_TEST_RESOURCES + "/com/linux/enhydrator/FL_insurance_sample.csv", ",", "utf-8", true);
-         Pump pump = new Pump.Engine()
-                 .from(src)
-                 .to(new VirtualSinkSource())
-                 .to(new LogSink())
-                 .build();
+        Pump pump = engine.to(new VirtualSinkSource())
+                .to(new LogSink())
+                .build();
          Memory memory = pump.start();
          assertThat(memory, is(notNullValue()));
          assertThat(memory.areErrorsOccured(), is(false));
