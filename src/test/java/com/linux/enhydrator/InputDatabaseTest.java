@@ -11,6 +11,10 @@ import com.airhacks.enhydrator.db.UnmanagedConnectionProvider;
 import com.airhacks.enhydrator.in.JDBCSource;
 import com.airhacks.enhydrator.out.CSVFileSink;
 import com.airhacks.enhydrator.out.LogSink;
+import com.airhacks.enhydrator.out.NamedSink;
+import com.airhacks.enhydrator.out.Sink;
+import com.airhacks.enhydrator.transform.Datatype;
+import com.airhacks.enhydrator.transform.DatatypeNameMapper;
 import com.airhacks.enhydrator.transform.Memory;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -121,15 +125,22 @@ public class InputDatabaseTest {
                 .password("")
                 .newSource();
 
+        
+        NamedSink output = new CSVFileSink(null, CSV_OUTPUT, ",", false, true);
         // Create Engine
-        Engine engine = new Pump.Engine()
+        Pump pump = new Pump.Engine()
                 .from(jdbcSource) // set source
                 .sqlQuery("SELECT * FROM INDIA_CAPITALS") // query to retrieve data
-                .with("id", (id) -> id instanceof Integer ? (Integer) id : id) // column 1
-                .with("state", (state) -> String.valueOf(state)) // column 2
-                .with("capital_city", (city) -> String.valueOf(city)); // column 3
-        Pump pump = engine.to(new CSVFileSink("csvFileSink", CSV_OUTPUT, ",", true, false))
+                .continueOnError()
+                .startWith(new DatatypeNameMapper()
+                        .addMapping("id", Datatype.INTEGER))
+//                .with("id", (id) -> id instanceof Integer ? (Integer) id : id) // column 1
+//                .with("state", (state) -> String.valueOf(state)) // column 2
+//                .with("capital_city", (city) -> String.valueOf(city)) // column 3
+                .to(output)
+                .to(new LogSink())
                 .build(); // Build Pump
+        
         Memory memory = pump.start(); // Start the pump, get the memory
 
         assertThat(memory.areErrorsOccured(), is(false));
