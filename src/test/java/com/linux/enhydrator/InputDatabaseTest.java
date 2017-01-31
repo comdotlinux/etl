@@ -36,6 +36,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.Ignore;
 
 /**
  * Unit test to use enhydrator for retrieving data from database.
@@ -93,6 +94,7 @@ public class InputDatabaseTest {
 
     }
 
+    @Ignore
     @Test
     public void readFromDatabase() throws SQLException {
         JDBCSource jdbcSource = new JDBCSource.Configuration()

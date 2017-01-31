@@ -9,6 +9,7 @@ import com.airhacks.enhydrator.Pump;
 import com.airhacks.enhydrator.in.CSVFileSource;
 import com.airhacks.enhydrator.in.Source;
 import com.airhacks.enhydrator.in.VirtualSinkSource;
+import com.airhacks.enhydrator.out.CSVFileSink;
 import com.airhacks.enhydrator.out.LogSink;
 import com.airhacks.enhydrator.transform.Memory;
 import static org.hamcrest.CoreMatchers.is;
@@ -38,7 +39,8 @@ public class FirstAttemptTest {
      @Test
      public void readCsvToMemory() {
         Pump pump = engine.to(new VirtualSinkSource())
-                .to(new LogSink())
+//                .to(new LogSink())
+                .to(new CSVFileSink(null, "target/tmp.csv", ",", true, false))
                 .build();
          Memory memory = pump.start();
          assertThat(memory, is(notNullValue()));
