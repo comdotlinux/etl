@@ -47,7 +47,7 @@ public class InputDatabaseTest {
 
     private static UnmanagedConnectionProvider connectionProvider;
     private static final String DERBY_EMBEDDED_DRIVER = "org.apache.derby.jdbc.EmbeddedDriver";
-    private static final String CSV_OUTPUT = "IndiaCapitals.csv";
+    private static final String CSV_OUTPUT = "target/IndiaCapitals.csv";
     private static final SortedMap<String, String> STATE_TO_CAPITAL_CITY = new TreeMap<>();
 
     private Connection connection;
@@ -128,18 +128,13 @@ public class InputDatabaseTest {
                 .newSource();
 
         
-        NamedSink output = new CSVFileSink(null, CSV_OUTPUT, ",", false, true);
         // Create Engine
         Pump pump = new Pump.Engine()
                 .from(jdbcSource) // set source
                 .sqlQuery("SELECT * FROM INDIA_CAPITALS") // query to retrieve data
                 .continueOnError()
-                .startWith(new DatatypeNameMapper()
-                        .addMapping("id", Datatype.INTEGER))
-//                .with("id", (id) -> id instanceof Integer ? (Integer) id : id) // column 1
-//                .with("state", (state) -> String.valueOf(state)) // column 2
-//                .with("capital_city", (city) -> String.valueOf(city)) // column 3
-                .to(output)
+                .startWith(new DatatypeNameMapper().addMapping("id", Datatype.INTEGER))
+                .to(new CSVFileSink("*", CSV_OUTPUT, ",", true, false))
                 .to(new LogSink())
                 .build(); // Build Pump
         
