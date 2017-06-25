@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.linux.enhydrator;
 
 import com.airhacks.enhydrator.Pump;
@@ -11,8 +6,6 @@ import com.airhacks.enhydrator.db.UnmanagedConnectionProvider;
 import com.airhacks.enhydrator.in.JDBCSource;
 import com.airhacks.enhydrator.out.CSVFileSink;
 import com.airhacks.enhydrator.out.LogSink;
-import com.airhacks.enhydrator.out.NamedSink;
-import com.airhacks.enhydrator.out.Sink;
 import com.airhacks.enhydrator.transform.Datatype;
 import com.airhacks.enhydrator.transform.DatatypeNameMapper;
 import com.airhacks.enhydrator.transform.Memory;
@@ -22,14 +15,12 @@ import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.core.IsEqual.equalTo;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
